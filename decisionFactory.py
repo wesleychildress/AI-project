@@ -2,14 +2,14 @@ import random
 #import numpy as np
 
 #Decision Factory class
-class DecisionFactory:
+class decisionFactory:
     def __init__ ( self, name= 'Davros' ):
         self.name = name
         self.directions = [ 'wait', 'up', 'down', 'right', 'left' ]
         self.last_result = 'sucess'
         self.last_direction = 'wait'
         #relative position
-        self.state.pos = (0,0)
+        #self.state.pos = (0,0)
     
     def get_decision(self, verbose = True):
         return self.random_direction()
