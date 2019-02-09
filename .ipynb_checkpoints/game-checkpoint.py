@@ -130,12 +130,6 @@ class Map(object):              #The main class; where the action happens
             TempTile = MapTile("Rock", Column, Row)
             if Column == 0 or Column == 9:
                 Grid[Column][Row].append(TempTile)
-
-    '''for i in range(10):          #Placing Random trees
-        RandomRow = random.randint(0, MapSize - 1)
-        RandomColumn = random.randint(0, MapSize - 1)
-        TempTile = MapTile("Tree", RandomColumn, RandomRow)
-        Grid[RandomColumn][RandomRow].append(TempTile)'''
         
     RandomRow = random.randint(0, MapSize - 1)      #Dropping the hero in
     RandomColumn = random.randint(0, MapSize - 1)
@@ -158,9 +152,7 @@ class Map(object):              #The main class; where the action happens
         Map.Grid[int(Map.Hero.Column)][int(Map.Hero.Row)].append(Map.Hero)
 
 Map = Map()
-
 DF = decisionFactory()
-
 
 while not Done:     #Main pygame loop
 
@@ -180,8 +172,6 @@ while not Done:     #Main pygame loop
     if decision == "right":
         Map.Hero.Move("right")
             
-            
-
     Screen.fill(BLACK)
 
     for Row in range(MapSize):           # Drawing grid
