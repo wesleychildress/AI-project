@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import random
-import pygame 
+import pygame
 from pygame.base import *
 
 pygame.init()                                 #start up dat pygame
@@ -29,17 +29,16 @@ class decisionFactory:
         self.last_direction = 'wait'
         #relative position
         #self.state.pos = (0,0)
-    
+
     def get_decision(self, verbose = True):
         return self.random_direction()
-    
+
     def random_direction(self):
-        #wait state
-        r = random.randint(0,4)
-        #r = random.rantint(1,4)
-    
+        #wait state r = random.randint(0,4)
+        r = random.rantint(0,4)
+
         self.last_direction = self.directions[r]
-    
+
         return self.directions[r]
 
     def put_result(self, result):
@@ -50,7 +49,7 @@ class MapTile(object):                       #The main class for stationary thin
         self.Name = Name
         self.Column = Column
         self.Row = Row
-       
+
 
 
 class Character(object):                    #Characters can move around and do cool stuff
@@ -59,10 +58,10 @@ class Character(object):                    #Characters can move around and do c
         self.HP = HP
         self.Column = Column
         self.Row = Row
-        
+
     def Move(self, decision):
 
-        
+
         if decision == "up":
             if self.Row > 0:                #If within boundaries of grid
                 if self.CollisionCheck("up") == False:       #And nothing in the way
@@ -72,12 +71,12 @@ class Character(object):                    #Characters can move around and do c
             if self.Row < MapSize-1:
                 if self.CollisionCheck("down") == False:
                     self.Row += 1
-                    
+
         elif decision == "right":
             if self.Column < MapSize-1:
                 if self.CollisionCheck("right") == False:
                          self.Column += 1
-        
+
         elif decision == "left":
             if self.Column > 0:
                 if self.CollisionCheck("left") == False:
@@ -119,18 +118,18 @@ class Map(object):              #The main class; where the action happens
             TempTile = MapTile("Grass", Column, Row)
             Grid[Column][Row].append(TempTile)
 
-    for Row in range(MapSize):     #Putting some rocks near the top
+    for Row in range(MapSize):     #Perimeter rocks top & bottom row
         for Column in range(MapSize):
             TempTile = MapTile("Rock", Column, Row)
             if Row == 0 or Row == 9:
                 Grid[Column][Row].append(TempTile)
-                
-    for Column in range(MapSize):     #Putting some rocks near the top
+
+    for Column in range(MapSize):     #Perimeter rocks far left & right row
         for Row in range(1, 9):
             TempTile = MapTile("Rock", Column, Row)
             if Column == 0 or Column == 9:
                 Grid[Column][Row].append(TempTile)
-        
+
     RandomRow = random.randint(0, MapSize - 1)      #Dropping the hero in
     RandomColumn = random.randint(0, MapSize - 1)
     Hero = Character("Hero", 10, RandomColumn, RandomRow)
@@ -160,9 +159,9 @@ while not Done:     #Main pygame loop
         if event.type == pygame.QUIT:
             Done = True
     decision = DF.get_decision()
-    #DF.put_decision(result)
-   
-    
+    #DF.put_decision(decision)
+
+
     if decision == "up":
         Map.Hero.Move("up")
     if decision == "down":
@@ -171,7 +170,7 @@ while not Done:     #Main pygame loop
         Map.Hero.Move("left")
     if decision == "right":
         Map.Hero.Move("right")
-            
+
     Screen.fill(BLACK)
 
     for Row in range(MapSize):           # Drawing grid
