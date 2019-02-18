@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 import random
-import pygame
-from pygame.base import *
+import pygame, sys
+from pygame.locals import *
 
 pygame.init()                                 #start up dat pygame
 clock = pygame.time.Clock()                   #for framerate or something? still not very sure
