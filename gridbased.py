@@ -11,24 +11,20 @@ RED = (255, 0, 0 ) #walls
 WHITE = (255, 255, 255 ) #open space
 BLUE = (0, 0, 225 ) #hero
 GREEN = (0, 255, 0 ) #portal
-
-#game dimensions
-tileSize = 60       #pixel sizes for grid squares
-mapSize = 10        #M x M mapSize
-
-#numbers representing
+#number representing
 FLOOR = 0
 WALL = 1
 HERO = 2
 PORTAL = 3
-
 #linking colors and numbers
 colors = {
            FLOOR : WHITE,
            WALL : RED,
            HERO : BLUE,
            PORTAL : GREEN }
-
+#game dimensions
+tileSize = 60       #pixel sizes for grid squares
+mapSize = 10        #M x M mapSize
 #setting up display
 pygame.init()
 clock = pygame.time.Clock()
@@ -65,46 +61,46 @@ class moveHero():                    #Characters can move around and do cool stu
     def Move(self, decision):
 
         if decision == "up":
-            if self.CollisionCheck("up") == False:          #And nothing in the way
-                    if self.PortalCheck("up") == True:
+            if self.CollisionCheck("up") == False:              #nothing in the way
+                    if self.PortalCheck("up") == True:          #Portal
                         Done = True
                         sys.exit()
-                    elif self.PortalCheck("up") == False:     #No Portal
+                    elif self.PortalCheck("up") == False:       #No Portal
                         Map.tileMap[Map.heroRow+1][Map.heroColumn] = 2
                         Map.tileMap[Map.heroRow][Map.heroColumn] = 0
                         Map.heroRow = Map.heroRow+1
 
         elif decision == "down":
-            if self.CollisionCheck("down") == False:          #And nothing in the way
-                    if self.PortalCheck("down") == True:     #Portal
+            if self.CollisionCheck("down") == False:            #nothing in the way
+                    if self.PortalCheck("down") == True:        #Portal
                         Done = True
                         sys.exit()
-                    if self.PortalCheck("down") == False:     #No Portal
+                    if self.PortalCheck("down") == False:       #No Portal
                         Map.tileMap[Map.heroRow-1][Map.heroColumn] = 2
                         Map.tileMap[Map.heroRow][Map.heroColumn] = 0
                         Map.heroRow = Map.heroRow-1
 
         elif decision == "right":
-            if self.CollisionCheck("right") == False:          #And nothing in the way
-                    if self.PortalCheck("right") == True:     #No Portal
+            if self.CollisionCheck("right") == False:           #nothing in the way
+                    if self.PortalCheck("right") == True:       #Portal
                         Done = True
                         sys.exit()
-                    if self.PortalCheck("right") == False:
+                    if self.PortalCheck("right") == False:      #No portal
                         Map.tileMap[Map.heroRow][Map.heroColumn+1] = 2
                         Map.tileMap[Map.heroRow][Map.heroColumn] = 0
                         Map.heroColumn = Map.heroColumn+1
 
         elif decision == "left":
-            if self.CollisionCheck("left") == False:          #And nothing in the way
+            if self.CollisionCheck("left") == False:            #nothing in the way
                     if self.PortalCheck("left") == True:
                         Done = True
                         sys.exit()
-                    if self.PortalCheck("left") == False:     #No Portal
+                    if self.PortalCheck("left") == False:       #No Portal
                         Map.tileMap[Map.heroRow][Map.heroColumn-1] = 2
                         Map.tileMap[Map.heroRow][Map.heroColumn] = 0
                         Map.heroColumn = Map.heroColumn-1
 
-    def CollisionCheck(self, decision):       #Checks if anything is on top of the grass in the direction that the character wants to move. Used in the move function
+    def CollisionCheck(self, decision):       #have i had to much to drink
         if decision == "up":
             if Map.tileMap[Map.heroRow+1][Map.heroColumn] == 1:
                 return True
@@ -119,7 +115,7 @@ class moveHero():                    #Characters can move around and do cool stu
                 return True
         return False
 
-    def PortalCheck(self, decision):       #Checks if anything is on top of the grass in the direction that the character wants to move. Used in the move function
+    def PortalCheck(self, decision):         #beam me up scotty
         if decision == "up":
             if Map.tileMap[Map.heroRow+1][Map.heroColumn] == 3:
                 return True
@@ -135,11 +131,6 @@ class moveHero():                    #Characters can move around and do cool stu
         return False
 
 class Map(object):              #The main class
-    #global mapSize
-    #heroRow = 0
-    #heroColumn = 0
-    #portalRow = 0
-    #portalColumn = 0
 
     #our map
     tileMap = [
