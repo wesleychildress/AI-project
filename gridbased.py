@@ -198,9 +198,9 @@ while not Done:     #Main pygame loop
         for column in range (mapSize):
             pygame.draw.rect(screen, colors[Map.tileMap[row][column]], (column * tileSize, row * tileSize, tileSize, tileSize))
     #update display
-    #pygame.display.update()
+    pygame.display.update()
 
-    clock.tick(20)      #Limit to 60 fps or something
-    pygame.display.flip()     #Honestly not sure what this does, but it breaks if I remove it
+    clock.tick(40)      #fpt sec i think
+    pygame.display.flip()
 
 pygame.quit()
