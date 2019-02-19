@@ -51,7 +51,7 @@ class decisionFactory:
 
     def random_direction(self):
         #wait state
-        r = random.randint(0,4)
+        r = random.randint(1,4)
         #r = random.rantint(1,4)
 
         self.last_direction = self.directions[r]
@@ -68,79 +68,75 @@ class moveHero():                    #Characters can move around and do cool stu
         if decision == "up":
             if self.CollisionCheck("up") == False:          #And nothing in the way
                     if self.PortalCheck("up") == False:     #No Portal
-                        Map.tileMap[heroRow+1][heroColumn] = 3
-                        Map.tileMap[heroRow][heroColumn] = 1
+                        Map.tileMap[heroRow+1][heroColumn] = 2
+                        Map.tileMap[heroRow][heroColumn] = 0
                         Map.heroRow = heroRow+1
-                    if self.PortalCheck("up") == True:
+                    elif self.PortalCheck("up") == True:
                         Done = True
 
         elif decision == "down":
             if self.CollisionCheck("down") == False:          #And nothing in the way
                     if self.PortalCheck("down") == False:     #No Portal
-                        Map.tileMap[heroRow-1][heroColumn] = 3
-                        Map.tileMap[heroRow][heroColumn] = 1
+                        Map.tileMap[heroRow-1][heroColumn] = 2
+                        Map.tileMap[heroRow][heroColumn] = 0
                         Map.heroRow = heroRow-1
-                    if self.PortalCheck("up") == True:
+                    elif self.PortalCheck("down") == True:
                         Done = True
 
         elif decision == "right":
             if self.CollisionCheck("right") == False:          #And nothing in the way
                     if self.PortalCheck("right") == False:     #No Portal
-                        Map.tileMap[heroRow-1][heroColumn] = 3
-                        Map.tileMap[heroRow][heroColumn] = 1
-                        Map.heroRow = heroRow-1
-                    if self.PortalCheck("right") == True:
+                        Map.tileMap[heroRow][heroColumn+1] = 2
+                        Map.tileMap[heroRow][heroColumn] = 0
+                        Map.heroColumn = heroColumn+1
+                    elif self.PortalCheck("right") == True:
                         Done = True
 
         elif decision == "left":
             if self.CollisionCheck("left") == False:          #And nothing in the way
                     if self.PortalCheck("left") == False:     #No Portal
-                        Map.tileMap[heroRow-1][heroColumn] = 3
-                        Map.tileMap[heroRow][heroColumn] = 1
-                        Map.heroRow = heroRow-1
-                    if self.PortalCheck("right") == True:
+                        Map.tileMap[heroRow][heroColumn-1] = 2
+                        Map.tileMap[heroRow][heroColumn] = 0
+                        Map.heroColumn = heroColumn-1
+                    elif self.PortalCheck("left") == True:
                         Done = True
-        Map.update()
 
     def CollisionCheck(self, decision):       #Checks if anything is on top of the grass in the direction that the character wants to move. Used in the move function
         if decision == "up":
-            if Map.tileMap[self.Column][(self.Row)-1] < 1:
-                return True
-        elif decision == "left":
-            if Map.tileMap[self.Column-1][(self.Row)] < 1:
-                return True
-        elif decision == "right":
-            if Map.tileMap[self.Column+1][(self.Row)] < 1:
+            if Map.tileMap[heroRow+1][heroColumn] == 1:
                 return True
         elif decision == "down":
-            if Map.tileMap[self.Column][(self.Row)+1] < 1:
+            if Map.tileMap[heroRow-1][heroColumn] == 1:
+                return True
+        elif decision == "right":
+            if Map.tileMap[heroRow][heroColumn+1] == 1:
+                return True
+        elif decision == "left":
+            if Map.tileMap[heroRow][heroColumn-1] == 1:
                 return True
         return False
 
     def PortalCheck(self, decision):       #Checks if anything is on top of the grass in the direction that the character wants to move. Used in the move function
         if decision == "up":
-            if Map.tileMap[self.Column][(self.Row)-1] < 1:
-                return True
-        elif decision == "left":
-            if Map.tileMap[self.Column-1][(self.Row)] < 1:
-                return True
-        elif decision == "right":
-            if Map.tileMap[self.Column+1][(self.Row)] < 1:
+            if Map.tileMap[heroRow+1][heroColumn] == 3:
                 return True
         elif decision == "down":
-            if Map.tileMap[self.Column][(self.Row)+1] < 1:
+            if Map.tileMap[heroRow-1][heroColumn] == 3:
+                return True
+        elif decision == "right":
+            if Map.tileMap[heroRow][heroColumn+1] == 3:
+                return True
+        elif decision == "left":
+            if Map.tileMap[heroRow][heroColumn-1] == 3:
                 return True
         return False
 
-    def Location(self):
-        print("Coordinates: " + str(self.Column) + ", " + str(self.Row))
-
 class Map(object):              #The main class
     global mapSize
-    global currentHeroRow
-    global currentHeroColumn
-    global previousHeroRow
-    global previousHeroColumn
+    global heroRow
+    global heroColumn
+    global portalRow
+    global portalColumn
 
     #our map
     tileMap = [
@@ -159,6 +155,8 @@ class Map(object):              #The main class
     randomHeroRow = random.randint(1, mapSize - 2)      #Dropping the hero in
     randomHeroColumn = random.randint(1, mapSize - 2)
     tileMap[randomHeroRow][randomHeroColumn] = 2
+    heroRow = randomHeroRow
+    heroColumn = randomHeroColumn
 
     while True:
         randomPortalRow = random.randint(1, mapSize - 2)      #Dropping the hero in
@@ -167,12 +165,9 @@ class Map(object):              #The main class
             break
 
     tileMap[randomPortalRow][randomPortalColumn] = 3
+    portalRow = randomPortalRow
+    portalColumn = randomPortalColumn
 
-    def update(self):  #update tileMap after Hero moves
-        for row in range(mapSize):
-            for column in range (mapSize):
-                pygame.draw.rect(screen, colors[Map.tileMap[row][column]],
-                (column * tileSize, row * tileSize, tileSize, tileSize))
 
 Map = Map()
 DF = decisionFactory()
@@ -184,6 +179,7 @@ while not Done:     #Main pygame loop
         if event.type == pygame.QUIT:
             Done = True
             sys.exit()
+
     decision = DF.get_decision()
 
     if decision == "up":
