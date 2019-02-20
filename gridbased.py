@@ -25,6 +25,8 @@ colors = {
 #game dimensions
 tileSize = 60       #pixel sizes for grid squares
 mapSize = 10        #M x M mapSize
+# This sets the margin between each cell
+MARGIN = 5
 #setting up display
 pygame.init()
 clock = pygame.time.Clock()
@@ -69,6 +71,8 @@ class moveHero():                    #Characters can move around and do cool stu
                         Map.tileMap[Map.heroRow+1][Map.heroColumn] = 2
                         Map.tileMap[Map.heroRow][Map.heroColumn] = 0
                         Map.heroRow = Map.heroRow+1
+            #elif self.CollisionCheck("up") == True:             #There is a wall up
+                #if CollisionCheck("left") == True:
 
         elif decision == "down":
             if self.CollisionCheck("down") == False:            #nothing in the way
@@ -167,6 +171,8 @@ Map = Map()
 DF = decisionFactory()
 turd = moveHero()
 
+decisionCount = 0
+
 while not Done:     #Main pygame loop
 
     for event in pygame.event.get():
@@ -184,14 +190,17 @@ while not Done:     #Main pygame loop
         turd.Move("left")
     if decision == "right":
         turd.Move("right")
-
+    
+    decisionCount += 1
+    print decisionCount 
     for row in range(mapSize):
         for column in range (mapSize):
             pygame.draw.rect(screen, colors[Map.tileMap[row][column]], (column * tileSize, row * tileSize, tileSize, tileSize))
     #update display
     pygame.display.update()
 
-    clock.tick(40)      #fpt sec i think
+    clock.tick(60)      #fpt sec i think
     pygame.display.flip()
 
+print "The number of decisions: " + str(decisionCount)
 pygame.quit()
