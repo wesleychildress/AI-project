@@ -45,8 +45,6 @@ grid = [[1,1,1,1,1,1,1,1,1,1],
 
 
 
-
-
 # Character Class
 class Character(object):                    #Characters can move around and do cool stuff
     def __init__(self, Column, Row, Name= 'Davros' ):
@@ -93,7 +91,7 @@ class Character(object):                    #Characters can move around and do c
                 return True
         return False
 
-
+    
 
 
 
@@ -119,15 +117,15 @@ RandomColumn = random.randint(1, MAPSIZE - 2)
 grid[RandomRow][RandomColumn] = 2
 
 # Setting character to random coordinate
-RandomRow = random.randint(1, MAPSIZE - 2)  
-RandomColumn = random.randint(1, MAPSIZE - 2)
-Hero = Character(RandomColumn, RandomRow, 'Hero')
-DF = decisionFactory('Hero')
+RandomRowChar = random.randint(1, MAPSIZE - 2)  
+RandomColumnChar = random.randint(1, MAPSIZE - 2)
+
 #Checking if the character was placed in the same position as the portal
-while(grid[RandomRow][RandomColumn] == 2):
-    RandomRow = random.randint(1, MAPSIZE - 2)  
-    RandomColumn = random.randint(1, MAPSIZE - 2)
-grid[RandomRow][RandomColumn] = 3
+while(grid[RandomRowChar][RandomColumnChar] == 2):
+    RandomRowChar = random.randint(1, MAPSIZE - 2)  
+    RandomColumnChar = random.randint(1, MAPSIZE - 2)
+Hero = Character(RandomColumnChar, RandomRowChar, 'Hero')
+DF = decisionFactory('Hero')
 
 
 # Initialize pygame
@@ -178,10 +176,12 @@ while not done:
             color = WHITE
             if grid[row][column] == 1:
                 color = RED
-            if grid[row][column] == 2:#character
-                color = BLUE
-            if grid[row][column] == 3:          #portal
-                color = GREEN
+            if grid[Hero.Row][Hero.Column] == 0:    
+                color= BLUE
+            #if grid[row][column] == 2:  #portal
+            #    color = BLUE
+            #if grid[row][column] == 3:  #Character       
+            #    color = GREEN
             pygame.draw.rect(screen,
                              color,
                              [(MARGIN + WIDTH) * column + MARGIN,
