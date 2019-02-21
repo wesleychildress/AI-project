@@ -46,7 +46,7 @@ class moveHero():                    #Characters can move around and do cool stu
                         Done = True
                         sys.exit()
                     elif self.PortalCheck("up") == False:     #No Portal
-                        DF.put_check('No portal')
+                       # DF.put_check('No portal')
                         Map.tileMap[Map.heroRow+1][Map.heroColumn] = 2
                         Map.tileMap[Map.heroRow][Map.heroColumn] = 0
                         Map.heroRow = Map.heroRow+1
@@ -57,7 +57,7 @@ class moveHero():                    #Characters can move around and do cool stu
                         Done = True
                         sys.exit()
                     if self.PortalCheck("down") == False:     #No Portal
-                        DF.put_check('No portal')
+                      #  DF.put_check('No portal')
                         Map.tileMap[Map.heroRow-1][Map.heroColumn] = 2
                         Map.tileMap[Map.heroRow][Map.heroColumn] = 0
                         Map.heroRow = Map.heroRow-1
@@ -68,7 +68,7 @@ class moveHero():                    #Characters can move around and do cool stu
                         Done = True
                         sys.exit()
                     if self.PortalCheck("right") == False:
-                        DF.put_check('No portal')
+                       # DF.put_check('No portal')
                         Map.tileMap[Map.heroRow][Map.heroColumn+1] = 2
                         Map.tileMap[Map.heroRow][Map.heroColumn] = 0
                         Map.heroColumn = Map.heroColumn+1
@@ -79,7 +79,7 @@ class moveHero():                    #Characters can move around and do cool stu
                         Done = True
                         sys.exit()
                     if self.PortalCheck("left") == False:     #No Portal
-                        DF.put_check('No portal')
+                       # DF.put_check('No portal')
                         Map.tileMap[Map.heroRow][Map.heroColumn-1] = 2
                         Map.tileMap[Map.heroRow][Map.heroColumn] = 0
                         Map.heroColumn = Map.heroColumn-1
@@ -88,22 +88,22 @@ class moveHero():                    #Characters can move around and do cool stu
         if decision == "up":
             if Map.tileMap[Map.heroRow+1][Map.heroColumn] == 1:
                 print "Direction:", decision
-                DF.put_result('Fail')
+                DF.put_result('wall')
                 return True
         if decision == "down":
             if Map.tileMap[Map.heroRow-1][Map.heroColumn] == 1:
                 print "Direction:", decision
-                DF.put_result('Fail')
+                DF.put_result('wall')
                 return True
         if decision == "right":
             if Map.tileMap[Map.heroRow][Map.heroColumn+1] == 1:
                 print "Direction:", decision
-                DF.put_result('Fail')
+                DF.put_result('wall')
                 return True
         if decision == "left":
             if Map.tileMap[Map.heroRow][Map.heroColumn-1] == 1:
                 print "Direction:", decision
-                DF.put_result('Fail')
+                DF.put_result('wall')
                 return True
         print "Direction:", decision
         DF.put_result('Success')
@@ -112,21 +112,26 @@ class moveHero():                    #Characters can move around and do cool stu
     def PortalCheck(self, decision):      #checks portal relative to player 
         if decision == "up":
             if Map.tileMap[Map.heroRow+1][Map.heroColumn] == 3:
-                DF.put_result('Portal Found!')
+                DF.put_result('portal')
                 return True
+            
         if decision == "down":
             if Map.tileMap[Map.heroRow-1][Map.heroColumn] == 3:
-                DF.put_result('Portal Found!')
+                DF.put_result('portal')
                 return True
+           
         if decision == "right":
             if Map.tileMap[Map.heroRow][Map.heroColumn+1] == 3:
-                DF.put_result('Portal Found!')
+                DF.put_result('portal')
                 return True
+            
         if decision == "left":
             if Map.tileMap[Map.heroRow][Map.heroColumn-1] == 3:
-                DF.put_result('Portal Found!')
+                DF.put_result('portal')
                 return True
+            
         return False
+      
 
 class Map(object):              #The main class
     #global mapSize
@@ -197,7 +202,7 @@ while not Done:     #Main pygame loop
     #update display
     pygame.display.update()
 
-    clock.tick(20)      #speed of the tile
+    clock.tick(1)      #speed of the tile
     pygame.display.flip()
 
 pygame.quit()
