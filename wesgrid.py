@@ -50,7 +50,8 @@ class moveHero():                    #Characters can move around and do cool stu
                         Map.tileMap[Map.heroRow+1][Map.heroColumn] = 2
                         Map.tileMap[Map.heroRow][Map.heroColumn] = 0
                         Map.heroRow = Map.heroRow+1
-
+                        print "Direction:", decision
+                        DF.put_result('Success')
         elif decision == "down":
             if self.CollisionCheck("down") == False:          #And nothing in the way
                     if self.PortalCheck("down") == True:     #Portal
@@ -61,7 +62,8 @@ class moveHero():                    #Characters can move around and do cool stu
                         Map.tileMap[Map.heroRow-1][Map.heroColumn] = 2
                         Map.tileMap[Map.heroRow][Map.heroColumn] = 0
                         Map.heroRow = Map.heroRow-1
-
+                        print "Direction:", decision
+                        DF.put_result('Success')
         elif decision == "right":
             if self.CollisionCheck("right") == False:          #And nothing in the way
                     if self.PortalCheck("right") == True:     #No Portal
@@ -72,7 +74,8 @@ class moveHero():                    #Characters can move around and do cool stu
                         Map.tileMap[Map.heroRow][Map.heroColumn+1] = 2
                         Map.tileMap[Map.heroRow][Map.heroColumn] = 0
                         Map.heroColumn = Map.heroColumn+1
-
+                        print "Direction:", decision
+                        DF.put_result('Success')
         elif decision == "left":
             if self.CollisionCheck("left") == False:          #And nothing in the way
                     if self.PortalCheck("left") == True:
@@ -83,7 +86,8 @@ class moveHero():                    #Characters can move around and do cool stu
                         Map.tileMap[Map.heroRow][Map.heroColumn-1] = 2
                         Map.tileMap[Map.heroRow][Map.heroColumn] = 0
                         Map.heroColumn = Map.heroColumn-1
-
+                        print "Direction:", decision
+                        DF.put_result('Success')
     def CollisionCheck(self, decision):    
         if decision == "up":
             if Map.tileMap[Map.heroRow+1][Map.heroColumn] == 1:
@@ -105,8 +109,8 @@ class moveHero():                    #Characters can move around and do cool stu
                 print "Direction:", decision
                 DF.put_result('wall')
                 return True
-        print "Direction:", decision
-        DF.put_result('Success')
+       # print "Direction:", decision
+       # DF.put_result('Success')
         return False
 
     def PortalCheck(self, decision):      #checks portal relative to player 
@@ -202,7 +206,7 @@ while not Done:     #Main pygame loop
     #update display
     pygame.display.update()
 
-    clock.tick(1)      #speed of the tile
+    clock.tick(10)      #speed of the tile
     pygame.display.flip()
 
 pygame.quit()

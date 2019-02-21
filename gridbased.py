@@ -213,7 +213,7 @@ while not Done:     #Main pygame loop
     # it gets a new direction
     decision = DF.get_decision()
     if DF.last_result == "failure":
-        while decision == DF.last_direction:
+        if decision == DF.last_direction:
             decision = DF.get_decision()        
     
     if decision == "up":
@@ -235,7 +235,7 @@ while not Done:     #Main pygame loop
     #update display
     pygame.display.update()
 
-    clock.tick(1)      #fpt sec i think
+    clock.tick(10)      #fpt sec i think
     pygame.display.flip()
 
 print "The number of decisions: " + str(decisionCount)
