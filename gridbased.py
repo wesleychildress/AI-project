@@ -15,6 +15,7 @@ GREEN = (0, 255, 0 ) #portal
 #game dimensions
 tileSize = 60       #pixel sizes for grid squares
 mapSize = 10        #M x M mapSize
+margin = 5
 
 #numbers representing
 FLOOR = 0
@@ -22,17 +23,10 @@ WALL = 1
 HERO = 2
 PORTAL = 3
 
-#linking colors and numbers
-colors = {
-           FLOOR : WHITE,
-           WALL : RED,
-           HERO : BLUE,
-           PORTAL : GREEN }
-
 #setting up display
 pygame.init()
 clock = pygame.time.Clock()
-screen = pygame.display.set_mode((mapSize * tileSize, mapSize * tileSize))
+screen = pygame.display.set_mode(((mapSize * (margin+tileSize))+margin, (mapSize * (margin+tileSize))+margin))
 Done = False
 
 
@@ -88,7 +82,7 @@ class moveHero():                    #Characters can move around and do cool stu
                         Map.heroColumn = Map.heroColumn-1
                         print "Direction:", decision
                         DF.put_result('Success')
-    def CollisionCheck(self, decision):    
+    def CollisionCheck(self, decision):
         if decision == "up":
             if Map.tileMap[Map.heroRow+1][Map.heroColumn] == 1:
                 print "Direction:", decision
@@ -113,37 +107,31 @@ class moveHero():                    #Characters can move around and do cool stu
        # DF.put_result('Success')
         return False
 
-    def PortalCheck(self, decision):      #checks portal relative to player 
+    def PortalCheck(self, decision):      #checks portal relative to player
         if decision == "up":
             if Map.tileMap[Map.heroRow+1][Map.heroColumn] == 3:
                 DF.put_result('portal')
                 return True
-            
+
         if decision == "down":
             if Map.tileMap[Map.heroRow-1][Map.heroColumn] == 3:
                 DF.put_result('portal')
                 return True
-           
+
         if decision == "right":
             if Map.tileMap[Map.heroRow][Map.heroColumn+1] == 3:
                 DF.put_result('portal')
                 return True
-            
+
         if decision == "left":
             if Map.tileMap[Map.heroRow][Map.heroColumn-1] == 3:
                 DF.put_result('portal')
                 return True
-            
+
         return False
-      
+
 
 class Map(object):              #The main class
-    #global mapSize
-    #heroRow = 0
-    #heroColumn = 0
-    #portalRow = 0
-    #portalColumn = 0
-
     #our map
     tileMap = [
                 [1,1,1,1,1,1,1,1,1,1],
@@ -157,19 +145,19 @@ class Map(object):              #The main class
                 [1,0,0,0,0,0,0,0,0,1],
                 [1,1,1,1,1,1,1,1,1,1]
             ]
-
-    randomHeroRow = random.randint(1, mapSize - 2)      #Dropping the hero in
+    #place maze gangsta
+    randomHeroRow = random.randint(1, mapSize - 2)
     randomHeroColumn = random.randint(1, mapSize - 2)
     tileMap[randomHeroRow][randomHeroColumn] = 2
     heroRow = randomHeroRow
     heroColumn = randomHeroColumn
 
-    while True:
-        randomPortalRow = random.randint(1, mapSize - 2)      #Dropping the hero in
+    while True:  #make sure gansta doesn't get beemed up at beginning
+        randomPortalRow = random.randint(1, mapSize - 2)
         randomPortalColumn = random.randint(1, mapSize - 2)
         if randomPortalRow != randomHeroRow & randomPortalColumn != randomHeroColumn:
             break
-
+    #Place portal
     tileMap[randomPortalRow][randomPortalColumn] = 3
     portalRow = randomPortalRow
     portalColumn = randomPortalColumn
@@ -187,7 +175,7 @@ while not Done:     #Main pygame loop
             sys.exit()
 
     decision = DF.get_decision()
-   #result = results(decision)  
+   #result = results(decision)
     if decision == "up":
         turd.Move("up")
     if decision == "down":
@@ -196,13 +184,28 @@ while not Done:     #Main pygame loop
         turd.Move("left")
     if decision == "right":
         turd.Move("right")
-        
+
     screen.fill(BLACK)
-    
+
+    # Draw the grid
     for row in range(mapSize):
-        for column in range (mapSize):
-            pygame.draw.rect(screen, colors[Map.tileMap[row][column]], (column * tileSize, row * tileSize, tileSize, tileSize))
-            
+        for column in range(mapSize):
+            color = WHITE
+            if Map.tileMap[row][column] == 1:
+                color = RED
+            if Map.tileMap[row][column] == 0:
+                color= WHITE
+            if Map.tileMap[row][column] == 2:  #Character
+               color = BLUE
+            if Map.tileMap[row][column] == 3:  #Portal
+               color = GREEN
+            pygame.draw.rect(screen,
+                             color,
+                             [(margin + tileSize) * column + margin,
+                              (margin + tileSize) * row + margin,
+                              tileSize,
+                              tileSize])
+
     #update display
     pygame.display.update()
 
