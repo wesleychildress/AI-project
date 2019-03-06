@@ -146,7 +146,7 @@ class decisionFactory:
             
             elif self.last_direction == 'down':
                 self.test = True
-                self.switchx = False
+                self.switchx = False   
                 # returning going right
                 self.last_direction = 'right'
                 return self.directions[3]
@@ -156,13 +156,13 @@ class decisionFactory:
                 self.switchy = True
                 self.toggle = True
                 self.last_direction = 'up'
-                return self.directions[4]
+                return self.directions[2]
             
             elif self.last_direction == 'left':
                 self.test = True
-                self.switchy = True
-                self.toggle = False 
-                self.last_direction  = 'up'
-                return self.directions[1]
+                self.switchy = False
+                self.toggle = True 
+                self.last_direction  = 'down'
+                return self.directions[2]
             
                 
