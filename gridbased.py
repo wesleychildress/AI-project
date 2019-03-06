@@ -28,6 +28,7 @@ pygame.init()
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(((mapSize * (margin+tileSize))+margin, (mapSize * (margin+tileSize))+margin))
 Done = False
+decisionCount = 0
 
 
 class moveHero():                    #Characters can move around and do cool stuff
@@ -111,21 +112,25 @@ class moveHero():                    #Characters can move around and do cool stu
         if decision == "up":
             if Map.tileMap[Map.heroRow-1][Map.heroColumn] == 3:
                 DF.put_result('portal')
+                print "Number of decisions: " + str(decisionCount)
                 return True
 
         if decision == "down":
             if Map.tileMap[Map.heroRow+1][Map.heroColumn] == 3:
                 DF.put_result('portal')
+                print "Number of decisions: " + str(decisionCount)
                 return True
 
         if decision == "right":
             if Map.tileMap[Map.heroRow][Map.heroColumn+1] == 3:
                 DF.put_result('portal')
+                print "Number of decisions: " + str(decisionCount)
                 return True
 
         if decision == "left":
             if Map.tileMap[Map.heroRow][Map.heroColumn-1] == 3:
                 DF.put_result('portal')
+                print "Number of decisions: " + str(decisionCount)
                 return True
 
         return False
@@ -137,12 +142,12 @@ class Map(object):              #The main class
                 [1,1,1,1,1,1,1,1,1,1],
                 [1,0,0,0,0,0,0,0,0,1],
                 [1,0,0,0,0,0,0,0,0,1],
-                [1,0,0,0,0,0,1,1,1,1],
                 [1,0,0,0,0,0,0,0,0,1],
                 [1,0,0,0,0,0,0,0,0,1],
-                [1,0,0,0,1,0,0,0,0,1],
-                [1,0,0,0,1,0,0,0,0,1],
-                [1,0,0,0,1,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,1],
                 [1,1,1,1,1,1,1,1,1,1]
             ]
     #place maze gangsta
@@ -167,6 +172,7 @@ Map = Map()
 DF = decisionFactory()
 turd = moveHero()
 
+
 while not Done:     #Main pygame loop
 
     for event in pygame.event.get():
@@ -175,7 +181,7 @@ while not Done:     #Main pygame loop
             sys.exit()
 
     decision = DF.get_decision()
-   #result = results(decision)
+    #result = results(decision)
     if decision == "up":
         turd.Move("up")
     if decision == "down":
@@ -184,7 +190,9 @@ while not Done:     #Main pygame loop
         turd.Move("left")
     if decision == "right":
         turd.Move("right")
-
+    
+    decisionCount += 1
+    
     screen.fill(BLACK)
 
     # Draw the grid
@@ -209,7 +217,8 @@ while not Done:     #Main pygame loop
     #update display
     pygame.display.update()
 
-    clock.tick(1)      #speed of the tile
+
+    clock.tick(100)      #speed of the tile
     pygame.display.flip()
 
 pygame.quit()

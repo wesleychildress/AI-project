@@ -3,7 +3,7 @@
 import random
 import pygame, sys
 from pygame.locals import *
-import decisionFactory as DF
+from decisionFactory import decisionFactory
 
 #colors
 BLACK = (0, 0, 0 )
@@ -11,159 +11,132 @@ RED = (255, 0, 0 ) #walls
 WHITE = (255, 255, 255 ) #open space
 BLUE = (0, 0, 225 ) #hero
 GREEN = (0, 255, 0 ) #portal
-#number representing
+
+#game dimensions
+tileSize = 60       #pixel sizes for grid squares
+mapSize = 10        #M x M mapSize
+margin = 5
+
+#numbers representing
 FLOOR = 0
 WALL = 1
 HERO = 2
 PORTAL = 3
-#linking colors and numbers
-colors = {
-           FLOOR : WHITE,
-           WALL : RED,
-           HERO : BLUE,
-           PORTAL : GREEN }
-#game dimensions
-tileSize = 60       #pixel sizes for grid squares
-mapSize = 10        #M x M mapSize
-# This sets the margin between each cell
-MARGIN = 5
+
 #setting up display
 pygame.init()
 clock = pygame.time.Clock()
-screen = pygame.display.set_mode((mapSize * tileSize, mapSize * tileSize))
+screen = pygame.display.set_mode(((mapSize * (margin+tileSize))+margin, (mapSize * (margin+tileSize))+margin))
 Done = False
+decisionCount = 0
 
-
-
-#Decision Factory class
-class decisionFactory:
-    def __init__ ( self, name= 'Davros' ):
-        self.name = name
-        self.directions = [ 'wait', 'up', 'down', 'right', 'left' ]
-        self.last_result = 'sucess'
-        self.last_direction = 'wait'
-        #relative position
-        #self.state.pos = (0,0)
-
-    def get_decision(self, verbose = True):
-        return self.random_direction()
-
-    def random_direction(self):
-        #wait state
-        r = random.randint(1,4)
-        #r = random.rantint(1,4)
-
-        self.last_direction = self.directions[r]
-
-        return self.directions[r]
-
-    def put_result(self, result):
-        self.last_result = put_result
-        
-        
-        
 
 class moveHero():                    #Characters can move around and do cool stuff
     global Done
     def Move(self, decision):
 
         if decision == "up":
-            if self.CollisionCheck("up") == False:              #nothing in the way
-                    if self.PortalCheck("up") == True:          #Portal
+            if self.CollisionCheck("up") == False:          #And nothing in the way
+                    if self.PortalCheck("up") == True:
                         Done = True
                         sys.exit()
-                    
-                    if self.PortalCheck("up") == False:       #No Portal
+                    elif self.PortalCheck("up") == False:     #No Portal
+                       # DF.put_check('No portal')
                         Map.tileMap[Map.heroRow-1][Map.heroColumn] = 2
                         Map.tileMap[Map.heroRow][Map.heroColumn] = 0
                         Map.heroRow = Map.heroRow-1
-                        DF.last_direction = "up"
-                        DF.last_result = "success"
-                    
-
+                        print "Direction:", decision
+                        DF.put_result('Success')
         elif decision == "down":
-            if self.CollisionCheck("down") == False:            #nothing in the way
-                    if self.PortalCheck("down") == True:        #Portal
+            if self.CollisionCheck("down") == False:          #And nothing in the way
+                    if self.PortalCheck("down") == True:     #Portal
                         Done = True
                         sys.exit()
-                    
-                    if self.PortalCheck("down") == False:       #No Portal
+                    if self.PortalCheck("down") == False:     #No Portal
+                      #  DF.put_check('No portal')
                         Map.tileMap[Map.heroRow+1][Map.heroColumn] = 2
                         Map.tileMap[Map.heroRow][Map.heroColumn] = 0
                         Map.heroRow = Map.heroRow+1
-                        DF.last_direction = "down"
-                        DF.last_result = "success"
-                    
-                            
-
+                        print "Direction:", decision
+                        DF.put_result('Success')
         elif decision == "right":
-            if self.CollisionCheck("right") == False:           #nothing in the way
-                    if self.PortalCheck("right") == True:       #Portal
+            if self.CollisionCheck("right") == False:          #And nothing in the way
+                    if self.PortalCheck("right") == True:     #No Portal
                         Done = True
                         sys.exit()
-                   
-                    if self.PortalCheck("right") == False:      #No portal
+                    if self.PortalCheck("right") == False:
+                       # DF.put_check('No portal')
                         Map.tileMap[Map.heroRow][Map.heroColumn+1] = 2
                         Map.tileMap[Map.heroRow][Map.heroColumn] = 0
                         Map.heroColumn = Map.heroColumn+1
-                        DF.last_direction = "right"
-                        DF.last_result = "success"
-                    
-
+                        print "Direction:", decision
+                        DF.put_result('Success')
         elif decision == "left":
-            if self.CollisionCheck("left") == False:            #nothing in the way
+            if self.CollisionCheck("left") == False:          #And nothing in the way
                     if self.PortalCheck("left") == True:
                         Done = True
                         sys.exit()
-                    
-                    if self.PortalCheck("left") == False:       #No Portal
+                    if self.PortalCheck("left") == False:     #No Portal
+                       # DF.put_check('No portal')
                         Map.tileMap[Map.heroRow][Map.heroColumn-1] = 2
                         Map.tileMap[Map.heroRow][Map.heroColumn] = 0
                         Map.heroColumn = Map.heroColumn-1
-                        DF.last_direction = "left"
-                        DF.last_result = "success"
-                    
-
-    def CollisionCheck(self, decision):       #have i had to much to drink
+                        print "Direction:", decision
+                        DF.put_result('Success')
+    def CollisionCheck(self, decision):
         if decision == "up":
             if Map.tileMap[Map.heroRow-1][Map.heroColumn] == 1:
-                DF.last_result = "failure"
-                DF.last_direction = "up"
+                print "Direction:", decision
+                DF.put_result('wall')
                 return True
         if decision == "down":
             if Map.tileMap[Map.heroRow+1][Map.heroColumn] == 1:
-                DF.last_result = "failure"
-                DF.last_direction = "down"
+                print "Direction:", decision
+                DF.put_result('wall')
                 return True
         if decision == "right":
             if Map.tileMap[Map.heroRow][Map.heroColumn+1] == 1:
-                DF.last_result = "failure"
-                DF.last_direction = "right"
+                print "Direction:", decision
+                DF.put_result('wall')
                 return True
         if decision == "left":
             if Map.tileMap[Map.heroRow][Map.heroColumn-1] == 1:
-                DF.last_result = "failure"
-                DF.last_direction = "left"
+                print "Direction:", decision
+                DF.put_result('wall')
                 return True
+       # print "Direction:", decision
+       # DF.put_result('Success')
         return False
 
-    def PortalCheck(self, decision):         #beam me up scotty
+    def PortalCheck(self, decision):      #checks portal relative to player
         if decision == "up":
-            if Map.tileMap[Map.heroRow+1][Map.heroColumn] == 3:
-                return True
-        if decision == "down":
             if Map.tileMap[Map.heroRow-1][Map.heroColumn] == 3:
+                DF.put_result('portal')
+                print "Number of decisions: " + str(decisionCount)
                 return True
+
+        if decision == "down":
+            if Map.tileMap[Map.heroRow+1][Map.heroColumn] == 3:
+                DF.put_result('portal')
+                print "Number of decisions: " + str(decisionCount)
+                return True
+
         if decision == "right":
             if Map.tileMap[Map.heroRow][Map.heroColumn+1] == 3:
+                DF.put_result('portal')
+                print "Number of decisions: " + str(decisionCount)
                 return True
+
         if decision == "left":
             if Map.tileMap[Map.heroRow][Map.heroColumn-1] == 3:
+                DF.put_result('portal')
+                print "Number of decisions: " + str(decisionCount)
                 return True
+
         return False
 
-class Map(object):              #The main class
 
+class Map(object):              #The main class
     #our map
     tileMap = [
                 [1,1,1,1,1,1,1,1,1,1],
@@ -177,19 +150,19 @@ class Map(object):              #The main class
                 [1,0,0,0,0,0,0,0,0,1],
                 [1,1,1,1,1,1,1,1,1,1]
             ]
-
-    randomHeroRow = random.randint(1, mapSize - 2)      #Dropping the hero in
+    #place maze gangsta
+    randomHeroRow = random.randint(1, mapSize - 2)
     randomHeroColumn = random.randint(1, mapSize - 2)
     tileMap[randomHeroRow][randomHeroColumn] = 2
     heroRow = randomHeroRow
     heroColumn = randomHeroColumn
 
-    while True:
-        randomPortalRow = random.randint(1, mapSize - 2)      #Dropping the hero in
+    while True:  #make sure gansta doesn't get beemed up at beginning
+        randomPortalRow = random.randint(1, mapSize - 2)
         randomPortalColumn = random.randint(1, mapSize - 2)
         if randomPortalRow != randomHeroRow & randomPortalColumn != randomHeroColumn:
             break
-
+    #Place portal
     tileMap[randomPortalRow][randomPortalColumn] = 3
     portalRow = randomPortalRow
     portalColumn = randomPortalColumn
@@ -199,7 +172,6 @@ Map = Map()
 DF = decisionFactory()
 turd = moveHero()
 
-decisionCount = 0
 
 while not Done:     #Main pygame loop
 
@@ -208,14 +180,8 @@ while not Done:     #Main pygame loop
             Done = True
             sys.exit()
 
-    # Trying to see if the last direction was a failure, to get a new decision that 
-    # isnt going to go in the same direction, instead itll call the get_decision() till
-    # it gets a new direction
     decision = DF.get_decision()
-    if DF.last_result == "failure":
-        while decision == DF.last_direction:
-            decision = DF.get_decision()        
-    
+    #result = results(decision)
     if decision == "up":
         turd.Move("up")
     if decision == "down":
@@ -224,19 +190,35 @@ while not Done:     #Main pygame loop
         turd.Move("left")
     if decision == "right":
         turd.Move("right")
-
-    decisionCount += 1
-    print decisionCount 
-    print decision + " " + DF.last_result
     
+    decisionCount += 1
+    
+    screen.fill(BLACK)
+
+    # Draw the grid
     for row in range(mapSize):
-        for column in range (mapSize):
-            pygame.draw.rect(screen, colors[Map.tileMap[row][column]], (column * tileSize, row * tileSize, tileSize, tileSize))
+        for column in range(mapSize):
+            color = WHITE
+            if Map.tileMap[row][column] == 1:
+                color = RED
+            if Map.tileMap[row][column] == 0:
+                color= WHITE
+            if Map.tileMap[row][column] == 2:  #Character
+               color = BLUE
+            if Map.tileMap[row][column] == 3:  #Portal
+               color = GREEN
+            pygame.draw.rect(screen,
+                             color,
+                             [(margin + tileSize) * column + margin,
+                              (margin + tileSize) * row + margin,
+                              tileSize,
+                              tileSize])
+
     #update display
     pygame.display.update()
 
-    clock.tick(1)      #fpt sec i think
+
+    clock.tick(100)      #speed of the tile
     pygame.display.flip()
 
-print "The number of decisions: " + str(decisionCount)
 pygame.quit()
