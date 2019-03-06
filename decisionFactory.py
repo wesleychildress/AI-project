@@ -11,6 +11,7 @@ class decisionFactory:
         self.test = False #switching directions
         self.switchx = False #switching directions
         self.switchy = False #switching directions
+        self.toggle = False 
         #relative position
         #self.state.pos = (0,0)
     
@@ -112,22 +113,25 @@ class decisionFactory:
         # last_direction
         if case == 'Success':
             if self.test == True:
-                if self.switchx == True:
-                    self.last_direction = 'down'
-                    self.test = False 
-                    return self.directions[2]
-                elif self.switchx == False:
-                    self.last_direction = 'up'
-                    self.test = False
-                    return self.directions[1]
-                if self.switchy == True:
-                    self.last_direction = 'left'
-                    self.test = False 
-                    return self.directions[4]
-                elif self.switchy == False:
-                    self.last_direction = 'right'
-                    self.test = True 
-                    return self.directions[3]
+                if self.toggle == False:
+                    if self.switchx == True:
+                        self.last_direction = 'down'
+                        self.test = False 
+                        return self.directions[2]
+                    elif self.switchx == False:
+                        self.last_direction = 'up'
+                        self.test = False
+                        return self.directions[1]
+                    
+                elif self.toggle == True:
+                    if self.switchy == True:
+                        self.last_direction = 'left'
+                        self.test = False 
+                        return self.directions[4]
+                    elif self.switchy == False:
+                        self.last_direction = 'right'
+                        self.test = True 
+                        return self.directions[3]
             else:
                 self.test = False
                 return self.last_direction
@@ -140,22 +144,24 @@ class decisionFactory:
                 self.last_direction = 'right'
                 return self.directions[3]
             
-            if self.last_direction == 'down':
+            elif self.last_direction == 'down':
                 self.test = True
                 self.switchx = False
                 # returning going right
                 self.last_direction = 'right'
                 return self.directions[3]
             
-            if self.last_direction == 'right':
+            elif self.last_direction == 'right':
                 self.test = True 
-                self.switchy = True 
-                self.last_direction = 'right'
+                self.switchy = True
+                self.toggle = True
+                self.last_direction = 'up'
                 return self.directions[4]
             
-            if self.last_direction == 'left':
+            elif self.last_direction == 'left':
                 self.test = True
                 self.switchy = True
+                self.toggle = False 
                 self.last_direction  = 'up'
                 return self.directions[1]
             
