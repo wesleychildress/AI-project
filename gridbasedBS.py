@@ -142,7 +142,7 @@ class Map(object):              #The main class
                 [1,1,1,1,1,1,1,1,1,1],
                 [1,0,0,0,0,0,1,0,0,1],
                 [1,0,0,0,0,0,1,0,0,1],
-                [1,0,0,0,0,0,1,0,0,1],
+                [1,1,1,1,0,0,1,0,0,1],
                 [1,0,0,0,0,0,0,0,0,1],
                 [1,0,0,0,0,0,0,0,0,1],
                 [1,0,0,0,0,0,1,1,1,1],
@@ -218,7 +218,7 @@ while not Done:     #Main pygame loop
     pygame.display.update()
 
 
-    clock.tick(5)      #speed of the tile
+    clock.tick(20)      #speed of the tile
     pygame.display.flip()
 
 pygame.quit()
